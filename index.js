@@ -89,7 +89,7 @@ const paymentDetailsSchema = new mongoose.Schema({
     email:String
 })
 
-const paymentModel = mongoose.model("payment_details",locationSchema);
+const paymentModel = mongoose.model("payment_details",paymentDetailsSchema);
 // app.get("/payment",async(req,res)=>{
 //     try{
 //         let data = await paymentModel.find();
