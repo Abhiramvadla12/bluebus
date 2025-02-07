@@ -90,14 +90,29 @@ const paymentDetailsSchema = new mongoose.Schema({
 })
 
 const paymentModel = mongoose.model("payment_details",locationSchema);
-app.get("/payment",async(req,res)=>{
+// app.get("/payment",async(req,res)=>{
+//     try{
+//         let data = await paymentModel.find();
+//         console.log(data);
+//         res.send(data);
+//     }
+//     catch(err){
+//         console.error("❌ Error fetching data:", err);
+//         res.status(500).send({ error: "Internal Server Error" });
+//     }
+// })
+app.post("/payment",async(req,res)=>{
     try{
-        let data = await paymentModel.find();
+        const data = req.body;
         console.log(data);
-        res.send(data);
+        let post = await detailsModel.create(data);
+        res.send({
+            message: "✅ Data inserted successfully into login_details",
+            user: post
+        });
     }
-    catch(err){
-        console.error("❌ Error fetching data:", err);
+    catch (error) {
+        console.error("❌ Error inserting data into marustunna:", error);
         res.status(500).send({ error: "Internal Server Error" });
     }
 })
