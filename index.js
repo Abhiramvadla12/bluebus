@@ -81,6 +81,26 @@ app.get("/location",async(req,res)=>{
         res.status(500).send({ error: "Internal Server Error" });
     }
 })
+
+const paymentDetailsSchema = new mongoose.Schema({
+    age: String,
+    username: String,
+    phone: String,
+    email:String
+})
+
+const paymentModel = mongoose.model("payment_details",locationSchema);
+app.get("/payment",async(req,res)=>{
+    try{
+        let data = await paymentModel.find();
+        console.log(data);
+        res.send(data);
+    }
+    catch(err){
+        console.error("❌ Error fetching data:", err);
+        res.status(500).send({ error: "Internal Server Error" });
+    }
+})
 app.listen(port,()=>{
     console.log(`🚀 Server running at http://localhost:${port}`);
 })
