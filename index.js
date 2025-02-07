@@ -105,7 +105,7 @@ app.post("/payment",async(req,res)=>{
     try{
         const data = req.body;
         console.log(data);
-        let post = await detailsModel.create(data);
+        let post = await paymentModel.create(data);
         res.send({
             message: "✅ Data inserted successfully into login_details",
             user: post
