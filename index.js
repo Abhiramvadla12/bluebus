@@ -28,16 +28,32 @@ const detailsModel = mongoose.model("login_details",detailsSchema);
 
 //get login details
 
-app.get("/login",async(req,res)=>{
-        try{
-            let data = await detailsModel.find();
-            console.log(data);
-            res.send(data);
+app.post("/login", async (req, res) => {
+    try {
+        const { email, password } = req.body; // Extract credentials from request body
+
+        if (!email || !password) {
+            return res.status(400).send({ error: "Email and password are required" });
         }
-        catch(err){
-            console.error("❌ Error fetching data:", err);
-            res.status(500).send({ error: "Internal Server Error" });
+
+        let user = await detailsModel.findOne({ email });
+
+        if (!user) {
+            return res.status(404).send({ error: "User not found" });
         }
+
+        // Assuming passwords are stored as plain text (not recommended, use bcrypt in production)
+        if (user.password !== password) {
+            return res.status(401).send({ error: "Invalid credentials" });
+        }
+
+        console.log("✅ User logged in:", user);
+        res.send(user); // Send user details (excluding sensitive info like password)
+
+    } catch (err) {
+        console.error("❌ Error logging in:", err);
+        res.status(500).send({ error: "Internal Server Error" });
+    }
 });
 
 
